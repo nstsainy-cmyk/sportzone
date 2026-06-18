@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportZone — Booking Lapangan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Project.css">
+</head>
+<body>
+ 
+<!-- ═══════════════════════════════════
+     HEADER / NAVBAR
+═══════════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">🏟️</div>
+      Sport<span>Zone</span>
+    </div>
+    <nav>
+      <button class="active" onclick="switchPage('booking', this)">
+        <span>⚡</span><span class="nav-text">Booking</span>
+      </button>
+      <button onclick="switchPage('jadwal', this)">
+        <span>📅</span><span class="nav-text">Jadwal</span>
+      </button>
+      <button onclick="switchPage('riwayat', this)" id="riwayat-btn">
+        <span>📋</span><span class="nav-text">Riwayat</span>
+        <span class="nav-badge" id="history-count" style="display:none">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
+ 
+<!-- ═══════════════════════════════════
+     KONTEN UTAMA
+═══════════════════════════════════ -->
+<main>
+ 
+  <!-- ══════════════ PAGE: BOOKING ══════════════ -->
+  <div class="page active" id="page-booking">
+ 
+    <!-- Hero Banner -->
+    <div class="hero">
+      <h1>Booking Lapangan<br><span>Olahraga Favorit Kamu</span></h1>
+      <p>Pilih lapangan, tentukan jadwal, dan bayar — semua dalam satu tempat.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-val">5</span>
+          <span class="stat-lbl">Lapangan</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val">10:00–00:00</span>
+          <span class="stat-lbl">Jam Operasional</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val">4</span>
+          <span class="stat-lbl">Cabang Olahraga</span>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Pilih Olahraga -->
+    <div class="sec-title">Pilih Olahraga &amp; Lapangan</div>
+    <div class="sport-grid" id="sport-grid">
+      <!-- Cards diisi oleh JavaScript -->
+    </div>
+ 
+    <!-- Form Booking (muncul setelah memilih olahraga) -->
+    <div class="booking-form" id="booking-form-section" style="display:none">
+      <div class="sec-title">Isi Detail Booking</div>
+ 
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Pemesan</label>
+          <input type="text" id="inp-name" placeholder="Masukkan nama lengkap">
+        </div>
+        <div class="form-group">
+          <label>Tanggal Main</label>
+          <input type="date" id="inp-date">
+        </div>
+      </div>
+ 
+      <!-- Pilih Lapangan (muncul jika ada >1 lapangan, diisi JS) -->
+      <!-- id="court-group" ditambahkan dinamis oleh JS di sini -->
+ 
+      <!-- Slot Waktu -->
+      <div class="form-group">
+        <label>
+          Pilih Slot Waktu
+          <span class="label-note">(bisa pilih lebih dari 1)</span>
+        </label>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot dot-available"></div> Tersedia
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot dot-selected"></div> Dipilih
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot dot-booked"></div> Sudah Terisi
+          </div>
+        </div>
+        <div class="slots-grid" id="slots-grid">
+          <!-- Slot diisi oleh JavaScript -->
+        </div>
+      </div>
+ 
+      <!-- Rincian Biaya (muncul setelah memilih slot) -->
+      <div id="cost-section" style="display:none">
+        <div class="cost-box">
+          <div class="cost-row"><span>Lapangan</span>    <span id="cost-field">—</span></div>
+          <div class="cost-row"><span>Durasi</span>      <span id="cost-dur">—</span></div>
+          <div class="cost-row"><span>Harga per jam</span><span id="cost-rate">—</span></div>
+          <div class="cost-row total-row">
+            <span>Total Biaya</span>
+            <span class="val-green" id="cost-total">—</span>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn" id="btn-book" onclick="openConfirm()">
+            🏷️ Konfirmasi Booking
+          </button>
+        </div>
+      </div>
+ 
+    </div><!-- /booking-form -->
+  </div><!-- /page-booking -->
+ 
+ 
+  <!-- ══════════════ PAGE: JADWAL ══════════════ -->
+  <div class="page" id="page-jadwal">
+    <div class="sec-title">Jadwal Lapangan</div>
+ 
+    <div class="filter-row">
+      <select id="filter-sport" onchange="renderJadwal()">
+        <option value="">Semua Olahraga</option>
+        <!-- Options diisi oleh JavaScript -->
+      </select>
+      <input type="date" id="filter-date" onchange="renderJadwal()">
+    </div>
+ 
+    <div class="table-wrap">
+      <table class="jadwal-table" id="jadwal-table">
+        <thead>
+          <tr>
+            <th>Lapangan</th>
+            <th>Tanggal</th>
+            <th>Waktu</th>
+            <th>Pemesan</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="jadwal-body">
+          <!-- Diisi oleh JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div><!-- /page-jadwal -->
+ 
+ 
+  <!-- ══════════════ PAGE: RIWAYAT ══════════════ -->
+  <div class="page" id="page-riwayat">
+    <div class="riwayat-header">
+      <div class="sec-title" style="margin-bottom:0">Riwayat Booking</div>
+      <button class="btn btn-outline btn-sm" onclick="clearHistory()">
+        🗑 Hapus Semua
+      </button>
+    </div>
+    <div id="history-list">
+      <!-- Diisi oleh JavaScript -->
+    </div>
+  </div><!-- /page-riwayat -->
+ 
+</main>
+ 
+ 
+<!-- ═══════════════════════════════════
+     MODAL KONFIRMASI BOOKING
+═══════════════════════════════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-icon">🏟️</div>
+    <h2>Konfirmasi Booking</h2>
+    <p class="sub">Pastikan detail booking kamu sudah benar.</p>
+    <div class="confirm-detail" id="confirm-detail">
+      <!-- Diisi oleh JavaScript -->
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Batal</button>
+      <button class="btn" onclick="submitBooking()">✅ Bayar &amp; Booking</button>
+    </div>
+  </div>
+</div>
+ 
+ 
+<!-- ═══════════════════════════════════
+     TOAST NOTIFICATION CONTAINER
+═══════════════════════════════════ -->
+<div class="toast-wrap" id="toast-wrap"></div>
+ 
+ 
+<!-- Script dimuat terakhir agar DOM sudah siap -->
+<script src="Project.js"></script>
+ 
+</body>
+</html>
+ 
